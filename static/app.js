@@ -14,16 +14,30 @@ interact('.draggable')
         autoScroll: true,
         onstart: function(event) {
             var $target = $(event.target);
+            var nextSibling = $target.next();
+            if ( nextSibling.length === 0) {
+                console.log('should allways have a sibling :/')
+            }
+            var firstRun = $(nextSibling[0]).hasClass('item-secondary');
+            if (firstRun) {
+
+                var sidbarScroll = $('aside').scrollTop();
+                $target.css('transform', 'translate(0px, -'+sidbarScroll+'px)');
+                // they dont use data attrs
+                // $target.data('y', -sidbarScroll);
+                $target[0].setAttribute('data-y', -sidbarScroll);
+            }
             $target.css('position', 'absolute');
             $target.css('z-index', topZindex++);
 
-            var nextSibling = $target.next();
-            if (nextSibling.length === 0 || !$(nextSibling[0]).hasClass('item-secondary')) {
+            if (nextSibling.length === 0 || !firstRun) {
                 return;
             }
             var copyNode = nextSibling[0].cloneNode(true);
             nextSibling.after(copyNode);
-            $(nextSibling).removeClass('item-secondary')
+            $(nextSibling).removeClass('item-secondary');
+
+            dragMoveListener(event)
 
         },
         // call this function on every dragmove event
