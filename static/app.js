@@ -20,12 +20,17 @@ interact('.draggable')
             }
             var firstRun = $(nextSibling[0]).hasClass('item-secondary');
             if (firstRun) {
+                //safari abs position bug
+                $target.css('top', $target.offset().top)
+                $target.css('left', $target.offset().left)
 
                 var sidbarScroll = $('aside').scrollTop();
                 $target.css('transform', 'translate(0px, -'+sidbarScroll+'px)');
                 // they dont use data attrs
                 // $target.data('y', -sidbarScroll);
                 $target[0].setAttribute('data-y', -sidbarScroll);
+
+
             }
             $target.css('position', 'absolute');
             $target.css('z-index', topZindex++);
