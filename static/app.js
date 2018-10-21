@@ -105,7 +105,7 @@ function dragMoveListener(event) {
 function setTranslate(el, value) {
     var currentValue = el.style.transform;
     if( currentValue.indexOf('translate') !== -1) {
-        var newValue = currentValue.replace(/translate(.*)/gi, value)
+        var newValue = currentValue.replace(/translate\(.*?\)/gi, value)
     }
     else {
         var newValue = currentValue + ' ' + value;
@@ -117,7 +117,7 @@ function setTranslate(el, value) {
 function setRotate(el, value) {
     var currentValue = el.style.transform;
     if( currentValue.indexOf('rotate') !== -1) {
-        var newValue = currentValue.replace(/rotate(.*)/gi, value)
+        var newValue = currentValue.replace(/rotate\(.*?\)/gi, value)
     }
     else {
         var newValue = currentValue + ' ' + value;
@@ -129,7 +129,7 @@ function setRotate(el, value) {
 function setScale(el, value) {
     var currentValue = el.style.transform;
     if( currentValue.indexOf('scale') !== -1) {
-        var newValue = currentValue.replace(/scale(.*)/gi, value)
+        var newValue = currentValue.replace(/scale\(.*?\)/gi, value)
     }
     else {
         var newValue = currentValue + ' ' + value;
