@@ -12,10 +12,10 @@ interact('.draggable')
         // },
         // enable autoScroll
         autoScroll: true,
-        onstart: function(event) {
+        onstart: function (event) {
             var $target = $(event.target);
             var nextSibling = $target.next();
-            if ( nextSibling.length === 0) {
+            if (nextSibling.length === 0) {
                 console.log('should allways have a sibling :/')
             }
             var firstRun = $(nextSibling[0]).hasClass('item-secondary');
@@ -25,7 +25,7 @@ interact('.draggable')
                 $target.css('left', $target.offset().left)
 
                 var sidbarScroll = $('aside').scrollTop();
-                $target.css('transform', 'translate(0px, -'+sidbarScroll+'px)');
+                $target.css('transform', 'translate(0px, -' + sidbarScroll + 'px)');
                 // they dont use data attrs
                 // $target.data('y', -sidbarScroll);
                 $target[0].setAttribute('data-y', -sidbarScroll);
@@ -57,6 +57,35 @@ interact('.draggable')
             //     Math.pow(event.pageY - event.y0, 2) | 0))
             //         .toFixed(2) + 'px');
         }
+    })
+    .gesturable({
+        onstart: function (event) {
+            // clearTimeout(resetTimeout);
+            // event.target.classList.remove('reset');
+        },
+        onmove: function (event) {
+            scale = scale * (1 + (event.ds / 2));
+
+            event.target.style.webkitTransform = 'scale(' + scale + ')';
+            event.target.style.transform =
+                'scale(' + scale + ')';
+
+            var $target = $(event.target);
+            var angle = $target.data('angle') || 0;
+            angle += event.da;
+            $target.data('angle', angle);
+
+            event.target.webkitTransform =
+                event.target.transform =
+                    'rotate(' + angle + 'deg)';
+
+
+            // dragMoveListener(event);
+        },
+        onend: function (event) {
+            // resetTimeout = setTimeout(reset, 1000);
+            // event.target.classList.add('reset');
+        }
     });
 
 function dragMoveListener(event) {
@@ -79,62 +108,70 @@ function dragMoveListener(event) {
 window.dragMoveListener = dragMoveListener;
 
 
-
 //zoom
 
-
-var scale = 1,
-    scaleElement = document.getElementsByClassName('scalable'),
-    resetTimeout;
-
-interact(scaleElement)
-  .gesturable({
-    onstart: function (event) {
-      // clearTimeout(resetTimeout);
-      // event.target.classList.remove('reset');
-    },
-    onmove: function (event) {
-      scale = scale * (1 + event.ds);
-
-      event.target.style.webkitTransform =
-      event.target.style.transform =
-        'scale(' + scale + ')';
-
-      dragMoveListener(event);
-    },
-    onend: function (event) {
-      // resetTimeout = setTimeout(reset, 1000);
-      // event.target.classList.add('reset');
-    }
-  })
-  .draggable({ onmove: dragMoveListener });
-
-function reset () {
-  scale = 1;
-  scaleElement.style.webkitTransform =
-  scaleElement.style.transform =
-    'scale(1)';
-}
-
-
-//rotate
-
-var angle = 0;
-
-interact('.rotateable').gesturable({
-  onmove: function (event) {
-    var arrow = document.getElementById('rotateable');
-
-    angle += event.da;
-
-    arrow.style.webkitTransform =
-    arrow.style.transform =
-      'rotate(' + angle + 'deg)';
-
-    document.getElementById('angle-info').textContent =
-      angle.toFixed(2) + '\u00b0';
-  }
-});
+//
+// var scale = 1,
+//     scaleElement = document.getElementsByClassName('scalable'),
+//     resetTimeout;
+//
+// interact(scaleElement)
+//     .gesturable({
+//         onstart: function (event) {
+//             // clearTimeout(resetTimeout);
+//             // event.target.classList.remove('reset');
+//         },
+//         onmove: function (event) {
+//             scale = scale * (1 + (event.ds / 2));
+//
+//             event.target.style.webkitTransform = 'scale(' + scale + ')';
+//             event.target.style.transform =
+//                 'scale(' + scale + ')';
+//
+//             var arrow = document.getElementById('rotateable');
+//
+//             angle += event.da;
+//
+//             event.target.webkitTransform =
+//                 event.target.transform =
+//                     'rotate(' + angle + 'deg)';
+//
+//
+//             // dragMoveListener(event);
+//         },
+//         onend: function (event) {
+//             // resetTimeout = setTimeout(reset, 1000);
+//             // event.target.classList.add('reset');
+//         }
+//     })
+//     .draggable({onmove: dragMoveListener});
+//
+// function reset() {
+//     scale = 1;
+//     scaleElement.style.webkitTransform =
+//         scaleElement.style.transform =
+//             'scale(1)';
+// }
+//
+//
+// //rotate
+//
+// var angle = 0;
+//
+// interact('.rotateable').gesturable({
+//     onmove: function (event) {
+//         var arrow = document.getElementById('rotateable');
+//
+//         angle += event.da;
+//
+//         arrow.style.webkitTransform =
+//             arrow.style.transform =
+//                 'rotate(' + angle + 'deg)';
+//
+//         document.getElementById('angle-info').textContent =
+//             angle.toFixed(2) + '\u00b0';
+//     }
+// });
 
 
 // trash
@@ -142,40 +179,40 @@ interact('.rotateable').gesturable({
 
 // enable draggables to be dropped into this
 interact('.trash').dropzone({
-  // only accept elements matching this CSS selector
-  // accept: '#yes-drop',
-  // Require a 75% element overlap for a drop to be possible
-  // overlap: 0.75,
+    // only accept elements matching this CSS selector
+    // accept: '#yes-drop',
+    // Require a 75% element overlap for a drop to be possible
+    // overlap: 0.75,
 
-  // listen for drop related events:
+    // listen for drop related events:
 
-  ondropactivate: function (event) {
-    // add active dropzone feedback
-    // event.target.classList.add('drop-active');
-  },
-  ondragenter: function (event) {
-    // var draggableElement = event.relatedTarget,
-    //     dropzoneElement = event.target;
-    //
-    // // feedback the possibility of a drop
-    // dropzoneElement.classList.add('drop-target');
-    // draggableElement.classList.add('can-drop');
-    // draggableElement.textContent = 'Dragged in';
-  },
-  ondragleave: function (event) {
-    // remove the drop feedback style
-    // event.target.classList.remove('drop-target');
-    // event.relatedTarget.classList.remove('can-drop');
-    // event.relatedTarget.textContent = 'Dragged out';
-  },
-  ondrop: function (event) {
-    // event.relatedTarget.textContent = 'Dropped';
-    $(event.relatedTarget).remove()
+    ondropactivate: function (event) {
+        // add active dropzone feedback
+        // event.target.classList.add('drop-active');
+    },
+    ondragenter: function (event) {
+        // var draggableElement = event.relatedTarget,
+        //     dropzoneElement = event.target;
+        //
+        // // feedback the possibility of a drop
+        // dropzoneElement.classList.add('drop-target');
+        // draggableElement.classList.add('can-drop');
+        // draggableElement.textContent = 'Dragged in';
+    },
+    ondragleave: function (event) {
+        // remove the drop feedback style
+        // event.target.classList.remove('drop-target');
+        // event.relatedTarget.classList.remove('can-drop');
+        // event.relatedTarget.textContent = 'Dragged out';
+    },
+    ondrop: function (event) {
+        // event.relatedTarget.textContent = 'Dropped';
+        $(event.relatedTarget).remove()
 
-  },
-  ondropdeactivate: function (event) {
-    // remove active dropzone feedback
-    // event.target.classList.remove('drop-active');
-    // event.target.classList.remove('drop-target');
-  }
+    },
+    ondropdeactivate: function (event) {
+        // remove active dropzone feedback
+        // event.target.classList.remove('drop-active');
+        // event.target.classList.remove('drop-target');
+    }
 });
