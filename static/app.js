@@ -64,20 +64,20 @@ interact('.draggable')
             // event.target.classList.remove('reset');
         },
         onmove: function (event) {
-            scale = scale * (1 + (event.ds / 2));
-
-            event.target.style.webkitTransform = 'scale(' + scale + ')';
-            event.target.style.transform =
-                'scale(' + scale + ')';
-
             var $target = $(event.target);
+            var scale = $target.data('scale') || 1;
+
+
+            var scale = scale * (1 + (event.ds / 5));
+            $target.data('scale', scale);
+
+            setScale(event.target,'scale(' + scale + ')')
+
             var angle = $target.data('angle') || 0;
-            angle += event.da;
+            angle += event.da / 2;
             $target.data('angle', angle);
 
-            event.target.webkitTransform =
-                event.target.transform =
-                    'rotate(' + angle + 'deg)';
+            setRotate(event.target, 'rotate(' + angle + 'deg)')
 
 
             // dragMoveListener(event);
@@ -95,13 +95,48 @@ function dragMoveListener(event) {
         y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
 
     // translate the element
-    target.style.webkitTransform =
-        target.style.transform =
-            'translate(' + x + 'px, ' + y + 'px)';
+    setTranslate(target, 'translate(' + x + 'px, ' + y + 'px)');
 
     // update the posiion attributes
     target.setAttribute('data-x', x);
     target.setAttribute('data-y', y);
+}
+
+function setTranslate(el, value) {
+    var currentValue = el.style.transform;
+    if( currentValue.indexOf('translate') !== -1) {
+        var newValue = currentValue.replace(/translate(.*)/gi, value)
+    }
+    else {
+        var newValue = currentValue + ' ' + value;
+    }
+    el.style.webkitTransform =
+        el.style.transform = newValue;
+
+}
+function setRotate(el, value) {
+    var currentValue = el.style.transform;
+    if( currentValue.indexOf('rotate') !== -1) {
+        var newValue = currentValue.replace(/rotate(.*)/gi, value)
+    }
+    else {
+        var newValue = currentValue + ' ' + value;
+    }
+    el.style.webkitTransform =
+        el.style.transform = newValue;
+
+}
+function setScale(el, value) {
+    var currentValue = el.style.transform;
+    if( currentValue.indexOf('scale') !== -1) {
+        var newValue = currentValue.replace(/scale(.*)/gi, value)
+    }
+    else {
+        var newValue = currentValue + ' ' + value;
+    }
+    el.style.webkitTransform =
+        el.style.transform = newValue;
+
 }
 
 // this is used later in the resizing and gesture demos

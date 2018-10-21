@@ -1,6 +1,6 @@
 .main-sidebar {
   float: right;
-  width: 197px;
+  width: 207px;
   height: 100%;
   padding: 0;
   margin: 0;
@@ -31,11 +31,11 @@ body {
 }
 ::-webkit-scrollbar {
   -webkit-appearance: none;
-  width: 17px;
+  width: 27px;
   background-color: #e9e9e9;
 }
 ::-webkit-scrollbar-thumb {
-  border-radius: 17px;
+  border-radius: 27px;
   background-color: rgba(33, 33, 33, 0.5);
   -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
 }
