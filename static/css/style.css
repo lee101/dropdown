@@ -1,10 +1,10 @@
 .main-sidebar {
   float: right;
-  width: 180px;
+  width: 197px;
   height: 100%;
   padding: 0;
   margin: 0;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 html,
 body {
@@ -28,6 +28,16 @@ body {
 .trash:hover,
 .trash:focus {
   color: #b25663;
+}
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 17px;
+  background-color: #e9e9e9;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 17px;
+  background-color: rgba(33, 33, 33, 0.5);
+  -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
 }
 body {
   background-repeat: repeat;
