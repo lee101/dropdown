@@ -21,7 +21,7 @@ interact('.draggable')
             var firstRun = $(nextSibling[0]).hasClass('item-secondary');
             if (firstRun) {
                 //safari abs position bug
-                $target.css('top', $target.offset().top)
+                $target.css('top', $target.offset().top + $target.parent().scrollTop())
                 $target.css('left', $target.offset().left)
 
                 var sidbarScroll = $('aside').scrollTop();
